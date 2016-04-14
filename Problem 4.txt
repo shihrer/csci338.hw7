@@ -1,0 +1,25 @@
+; Program the Turing Machine Simulator to simulate a Linear Bounded Automaton (LBA).
+; Assume that Γ = {L, 0, 1, R} where L denotes the leftmost cell in the LBA 
+; and R denotes the rightmost cell in the LBA.
+; The LBA should add one to the initial binary number, working like an analog-style 
+; car odometer.
+; For example, if the input tape starts with L01011R, it should end with L01100R.
+; As another example, if the input tape starts with L111R, it should end with L000R.
+; You may assume that the binary number will contain one or more digits.
+
+; Machine starts in state 0.
+
+; State 0: Move head all the way right
+a L * r a ; This is our start
+a 1 * r a ; Don't do anything to 1s
+a 0 * r a ; Don't do anything to 0s
+a R * l b ; Reached end of input.  Move head back to last binary digit, go to state 1
+
+; State 1: Move head left.  Increment by 1.  Accept when it encounters a 0 or L.
+b 0 1 * halt-accept ; if it's a 0, we're done
+b 1 0 l c ; Increment, go to next state
+
+; State 2: Start incrementing
+c 1 0 l c ; This carries the 1
+c 0 1 * halt-accept ; We're done here
+c L * * halt-accept ; Reached beginning of input, we're done
